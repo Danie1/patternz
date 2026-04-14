@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entrySlug } from '@/lib/content';
+
+interface Props {
+  comparison: CollectionEntry<'comparisons'>;
+}
+
+const { comparison } = Astro.props;
+const slug = entrySlug(comparison.id);
+---
+
+<article class="card">
+  <h3 style="margin:0"><a href={`/compare/${slug}`}>{comparison.data.title}</a></h3>
+  <p class="muted">{comparison.data.summary}</p>
+  <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem;">
+    {comparison.data.compared_options.map((option) => (
+      <span class="badge">{option}</span>
+    ))}
+  </div>
+</article>

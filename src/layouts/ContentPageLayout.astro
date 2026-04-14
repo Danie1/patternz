@@ -1,0 +1,23 @@
+---
+interface Props {
+  sectionTitle: string;
+}
+
+const { sectionTitle } = Astro.props;
+---
+
+<section class="three-col">
+  <aside class="card" style="position:sticky; top:76px; align-self:start;">
+    <p class="kicker">Section navigation</p>
+    <slot name="left" />
+  </aside>
+
+  <article class="card" style="padding:1.2rem;">
+    <p class="kicker">{sectionTitle}</p>
+    <slot />
+  </article>
+
+  <aside class="card" style="position:sticky; top:76px; align-self:start;">
+    <slot name="right" />
+  </aside>
+</section>

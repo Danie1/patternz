@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entrySlug } from '@/lib/content';
+
+interface Props {
+  scenario: CollectionEntry<'scenarios'>;
+}
+
+const { scenario } = Astro.props;
+const slug = entrySlug(scenario.id);
+---
+
+<article class="card">
+  <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:flex-start;">
+    <h3 style="margin:0"><a href={`/scenarios/${slug}`}>{scenario.data.title}</a></h3>
+    <span class="chip">{scenario.data.difficulty}</span>
+  </div>
+  <p class="muted">{scenario.data.summary}</p>
+  <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem;">
+    <span class="badge">{scenario.data.level}</span>
+    <span class="badge">{scenario.data.system_type}</span>
+    <span class="badge">{scenario.data.estimated_time} min</span>
+  </div>
+</article>

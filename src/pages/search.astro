@@ -1,0 +1,80 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="Search | Pattern Atlas" description="Local static search across concepts, patterns, scenarios, comparisons, and quizzes.">
+  <section class="card">
+    <h1 style="margin-top:0">Search</h1>
+    <input id="search-input" class="search-input" placeholder="Search architecture concepts" />
+    <div id="results" style="margin-top:1rem; display:grid; gap:0.9rem;"></div>
+  </section>
+
+  <script is:inline>
+    const params = new URLSearchParams(window.location.search);
+    const initial = params.get('q') ?? '';
+    const input = document.getElementById('search-input');
+    const resultRoot = document.getElementById('results');
+    if (input) input.value = initial;
+
+    let pagefind;
+    async function ensurePagefind() {
+      if (!pagefind) {
+        pagefind = await import('/pagefind/pagefind.js');
+      }
+      return pagefind;
+    }
+
+    function detectType(url) {
+      if (url.includes('/concepts/')) return 'concepts';
+      if (url.includes('/patterns/')) return 'patterns';
+      if (url.includes('/scenarios/')) return 'scenarios';
+      if (url.includes('/compare/')) return 'comparisons';
+      if (url.includes('/quiz/')) return 'quizzes';
+      return 'other';
+    }
+
+    function groupByType(results) {
+      const grouped = { concepts: [], patterns: [], scenarios: [], comparisons: [], quizzes: [] };
+      for (const item of results) {
+        const inferred = detectType(item.url);
+        if (grouped[inferred]) grouped[inferred].push(item);
+      }
+      return grouped;
+    }
+
+    async function runSearch(query) {
+      if (!resultRoot) return;
+      if (!query) {
+        resultRoot.innerHTML = '<p class="muted">Start typing to search content.</p>';
+        return;
+      }
+
+      const pf = await ensurePagefind();
+      const search = await pf.search(query, { filters: {} });
+      const data = await Promise.all(search.results.slice(0, 24).map((r) => r.data()));
+      const grouped = groupByType(data);
+
+      resultRoot.innerHTML = '';
+      Object.entries(grouped).forEach(([type, items]) => {
+        if (items.length === 0) return;
+        const section = document.createElement('section');
+        section.className = 'card';
+        section.style.boxShadow = 'none';
+        section.innerHTML = `<h2 style="margin-top:0; text-transform:capitalize;">${type}</h2>`;
+        const list = document.createElement('ul');
+        list.style.margin = '0';
+        list.style.paddingLeft = '1rem';
+        items.forEach((item) => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="${item.url}">${item.meta.title}</a> <span class="muted">${item.excerpt ?? ''}</span>`;
+          list.append(li);
+        });
+        section.append(list);
+        resultRoot.append(section);
+      });
+    }
+
+    input?.addEventListener('input', (e) => runSearch(e.target.value));
+    runSearch(initial);
+  </script>
+</MainLayout>

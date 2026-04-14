@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+import MainLayout from '@/layouts/MainLayout.astro';
+import QuizIsland from '@/components/islands/QuizIsland';
+import { entrySlug } from '@/lib/content';
+
+export async function getStaticPaths() {
+  const quizzes = await getCollection('quizzes');
+  return quizzes.map((entry) => ({
+    params: { slug: entrySlug(entry.id) },
+    props: { entry }
+  }));
+}
+
+const { entry } = Astro.props;
+const slug = entrySlug(entry.id);
+---
+
+<MainLayout title={`${entry.data.title} | Quiz`} description="Reasoning-oriented architecture quiz.">
+  <section class="card" style="margin-bottom:1rem;">
+    <p class="kicker">Quiz</p>
+    <h1 style="margin-top:0">{entry.data.title}</h1>
+    <p class="muted" style="margin-bottom:0">Difficulty: {entry.data.difficulty}</p>
+  </section>
+  <QuizIsland client:load id={entry.data.id} slug={slug} title={entry.data.title} questions={entry.data.questions} />
+</MainLayout>

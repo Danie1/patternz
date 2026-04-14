@@ -1,0 +1,24 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { entrySlug } from '@/lib/content';
+
+interface Props {
+  pattern: CollectionEntry<'patterns'>;
+}
+
+const { pattern } = Astro.props;
+const slug = entrySlug(pattern.id);
+---
+
+<article class="card">
+  <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:flex-start;">
+    <h3 style="margin:0"><a href={`/patterns/${slug}`}>{pattern.data.title}</a></h3>
+    <span class="chip">{pattern.data.level}</span>
+  </div>
+  <p class="muted">{pattern.data.summary}</p>
+  <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem;">
+    <span class="badge">{pattern.data.category}</span>
+    <span class="badge">{pattern.data.estimated_read_time} min</span>
+    <span class="badge">{pattern.data.related_scenarios.length} scenarios</span>
+  </div>
+</article>

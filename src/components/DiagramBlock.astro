@@ -1,0 +1,40 @@
+---
+interface Props {
+  title?: string;
+  code: string;
+  type?: 'mermaid' | 'svg' | 'text';
+}
+
+const { title = 'Diagram', code, type = 'mermaid' } = Astro.props;
+const isSvg = type === 'svg';
+---
+
+<section class="section card" style="box-shadow:none;">
+  <p class="kicker">{title}</p>
+  {isSvg ? (
+    <div set:html={code} />
+  ) : (
+    <pre class={type === 'mermaid' ? 'mermaid' : ''} style="white-space:pre-wrap; margin:0;">{code}</pre>
+  )}
+</section>
+
+<script>
+  import mermaid from 'mermaid';
+
+  const nodes = document.querySelectorAll('pre.mermaid:not([data-mermaid-rendered="true"])');
+  if (nodes.length > 0) {
+    const w = window;
+    if (!w.__patternzMermaidInitialized) {
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+      });
+      w.__patternzMermaidInitialized = true;
+    }
+
+    for (const node of nodes) {
+      node.setAttribute('data-mermaid-rendered', 'true');
+      mermaid.run({ nodes: [node] });
+    }
+  }
+</script>

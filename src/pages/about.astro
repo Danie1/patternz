@@ -1,0 +1,29 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+---
+
+<MainLayout title="About | Pattern Atlas" description="Methodology and philosophy behind this architecture handbook.">
+  <section class="card">
+    <h1 style="margin-top:0">About the method</h1>
+    <p>
+      Pattern Atlas is built as an interactive engineering handbook. It prioritizes practical reasoning over memorization,
+      and explains architecture choices through context, constraints, and tradeoffs.
+    </p>
+    <h2>How to use this site</h2>
+    <ol>
+      <li>Start with pattern fundamentals to build vocabulary.</li>
+      <li>Move to scenarios to see how patterns combine in complete system designs.</li>
+      <li>Use comparisons and quizzes to strengthen judgment.</li>
+    </ol>
+    <h2>Why static-first</h2>
+    <p>
+      The MVP is static-first for speed, reliability, and simple deployment on GitHub Pages. Interactive modules use
+      client-side islands only where needed.
+    </p>
+    <h2>Future direction</h2>
+    <p style="margin-bottom:0">
+      The content model is designed to expand beyond junior engineers into senior tracks, manager pathways, and
+      AI-agent/team-oriented architecture playbooks.
+    </p>
+  </section>
+</MainLayout>

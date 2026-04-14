@@ -1,0 +1,43 @@
+---
+interface Props {
+  id: string;
+  type: 'pattern' | 'scenario' | 'comparison';
+  title: string;
+  slug: string;
+}
+
+const { id, type, title, slug } = Astro.props;
+---
+
+<span
+  id="track-view"
+  data-id={id}
+  data-type={type}
+  data-title={title}
+  data-slug={slug}
+  style="display:none"
+></span>
+
+<script is:inline>
+  (() => {
+    const element = document.getElementById('track-view');
+    if (!element) return;
+    const key = 'patternz.progress.v1';
+    const entry = {
+      id: element.dataset.id,
+      type: element.dataset.type,
+      title: element.dataset.title,
+      slug: element.dataset.slug,
+      viewedAt: new Date().toISOString()
+    };
+    try {
+      const parsed = JSON.parse(localStorage.getItem(key) ?? '{"recentlyViewed":[],"completedQuizzes":[],"savedScenarios":[],"streakDays":0}');
+      const recent = [entry, ...(parsed.recentlyViewed ?? []).filter((item) => !(item.id === entry.id && item.type === entry.type))].slice(0, 12);
+      const today = new Date().toISOString().slice(0, 10);
+      const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+      const streak = parsed.lastActiveDate === today ? parsed.streakDays ?? 0 : parsed.lastActiveDate === yesterday ? (parsed.streakDays ?? 0) + 1 : 1;
+      const next = { ...parsed, recentlyViewed: recent, streakDays: streak, lastActiveDate: today };
+      localStorage.setItem(key, JSON.stringify(next));
+    } catch {}
+  })();
+</script>

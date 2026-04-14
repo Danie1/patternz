@@ -1,0 +1,17 @@
+---
+interface Props {
+  items: Array<{ id: string; label: string }>;
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="On this page">
+  <ul style="list-style:none; padding:0; margin:0; display:grid; gap:0.5rem;">
+    {items.map((item) => (
+      <li>
+        <a href={`#${item.id}`}>{item.label}</a>
+      </li>
+    ))}
+  </ul>
+</nav>

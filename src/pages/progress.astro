@@ -1,0 +1,12 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import ProgressTracker from '@/components/islands/ProgressTracker';
+---
+
+<MainLayout title="Progress | Pattern Atlas" description="Local-only dashboard for learning history and completion status.">
+  <section class="card" style="margin-bottom:1rem;">
+    <h1 style="margin-top:0">Progress</h1>
+    <p class="muted" style="margin-bottom:0">All progress is stored locally in your browser. No account required.</p>
+  </section>
+  <ProgressTracker client:load />
+</MainLayout>

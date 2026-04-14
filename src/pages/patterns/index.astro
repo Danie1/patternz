@@ -1,0 +1,30 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import LibraryLayout from '@/layouts/LibraryLayout.astro';
+import FilterBar from '@/components/islands/FilterBar';
+import { entrySlug, getPatterns } from '@/lib/content';
+
+const patterns = await getPatterns();
+
+const items = patterns.map((pattern) => ({
+  slug: entrySlug(pattern.id),
+  title: pattern.data.title,
+  summary: pattern.data.summary,
+  category: pattern.data.category,
+  level: pattern.data.level,
+  complexity: pattern.data.complexity,
+  tags: pattern.data.tags,
+  estimated_read_time: pattern.data.estimated_read_time,
+  importance: pattern.data.importance,
+  relatedScenarioCount: pattern.data.related_scenarios.length
+}));
+---
+
+<MainLayout title="Pattern Library | Pattern Atlas" description="Filterable catalog of architecture patterns by level, category, and complexity.">
+  <LibraryLayout
+    title="Pattern library"
+    description="Browse architecture patterns by category, level, complexity, and practical tradeoffs."
+  >
+    <FilterBar client:load items={items} />
+  </LibraryLayout>
+</MainLayout>

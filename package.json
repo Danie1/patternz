@@ -1,0 +1,34 @@
+{
+  "name": "patternz",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build && npm run search:index",
+    "preview": "astro preview",
+    "astro": "astro",
+    "check": "astro check",
+    "search:index": "pagefind --site dist"
+  },
+  "dependencies": {
+    "@astrojs/mdx": "^5.0.3",
+    "@astrojs/preact": "^5.1.1",
+    "@fontsource-variable/ibm-plex-sans": "^5.2.8",
+    "@fontsource/source-serif-4": "^5.2.9",
+    "@tailwindcss/vite": "^4.2.2",
+    "astro": "^6.1.6",
+    "mermaid": "^11.12.0",
+    "pagefind": "^1.5.2",
+    "preact": "^10.29.1",
+    "tailwindcss": "^4.2.2"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.8",
+    "@types/node": "^25.6.0",
+    "typescript": "^5.9.3"
+  }
+}
