@@ -1,0 +1,32 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+
+interface Props {
+  title: string;
+  target: string;
+  message: string;
+}
+
+const { title, target, message } = Astro.props;
+---
+
+<MainLayout title={title} description={message}>
+  <Fragment slot="head">
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={target} />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+  </Fragment>
+
+  <section class="card section">
+    <p class="kicker">Redirecting</p>
+    <h1 style="margin-top:0">This content moved into the roadmap</h1>
+    <p>{message}</p>
+    <p style="margin-bottom:0">
+      <a href={target}>Open the roadmap topic</a>
+    </p>
+  </section>
+
+  <script is:inline define:vars={{ target }}>
+    window.location.replace(target);
+  </script>
+</MainLayout>

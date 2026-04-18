@@ -46,8 +46,6 @@ quiz_ids:
   - quiz_tradeoff_judgment
 estimated_time: 40
 difficulty: medium
-related_comparisons:
-  - comparison_monolith_vs_microservices
 ---
 A file sync service is a practical exercise in making distributed state consistent across devices. The chunk-based design solves bandwidth efficiency; the metadata database solves versioning; the notification channel solves polling; and conflict detection solves concurrent edits. Each piece is independently addressable, but they only work reliably together.
 

@@ -45,8 +45,6 @@ quiz_ids:
   - quiz_tradeoff_judgment
 estimated_time: 45
 difficulty: hard
-related_comparisons:
-  - comparison_queue_vs_direct_sync
 ---
 A web crawler is a distributed systems problem disguised as a networking task. The hard parts are deduplication at scale, polite crawling that does not abuse target servers, and the URL frontier design that determines which pages get crawled first. Getting those three right defines the difference between a toy and a production crawler.
 

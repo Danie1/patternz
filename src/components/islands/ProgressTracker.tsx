@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'preact/hooks';
 import { loadProgress } from '@/lib/progress';
 
+function roadmapHref(slug: string) {
+  return `/?topic=${encodeURIComponent(slug)}`;
+}
+
 export default function ProgressTracker() {
   const [ready, setReady] = useState(false);
   const [state, setState] = useState(loadProgress());
@@ -48,7 +52,7 @@ export default function ProgressTracker() {
           <ul style={{ margin: 0, paddingLeft: '1rem', display: 'grid', gap: '0.45rem' }}>
             {state.savedScenarios.map((scenario) => (
               <li>
-                <a href={`/scenarios/${scenario.slug}`}>{scenario.title}</a>
+                <a href={roadmapHref(scenario.slug)}>{scenario.title}</a>
               </li>
             ))}
           </ul>
@@ -63,7 +67,7 @@ export default function ProgressTracker() {
           <ul style={{ margin: 0, paddingLeft: '1rem', display: 'grid', gap: '0.45rem' }}>
             {state.recentlyViewed.map((entry) => (
               <li>
-                <a href={`/${entry.type === 'comparison' ? 'compare' : `${entry.type}s`}/${entry.slug}`}>{entry.title}</a>
+                <a href={roadmapHref(entry.slug)}>{entry.title}</a>
               </li>
             ))}
           </ul>
@@ -73,11 +77,11 @@ export default function ProgressTracker() {
       <article class="card">
         <h3 style={{ marginTop: 0 }}>Recommended next step</h3>
         {recommendation ? (
-          <a href={`/${recommendation.type === 'comparison' ? 'compare' : `${recommendation.type}s`}/${recommendation.slug}`}>
+          <a href={roadmapHref(recommendation.slug)}>
             Continue with {recommendation.title}
           </a>
         ) : (
-          <a href="/patterns">Start with the pattern library</a>
+          <a href="/">Start with the roadmap</a>
         )}
       </article>
     </section>

@@ -1,15 +1,15 @@
 ---
 import '@/styles/global.css';
 import { siteConfig } from '@/lib/site';
-import ThemeToggle from '@/components/islands/ThemeToggle';
 import SearchModal from '@/components/islands/SearchModal';
 
 interface Props {
   title: string;
   description?: string;
+  mainClass?: string;
 }
 
-const { title, description = siteConfig.description } = Astro.props;
+const { title, description = siteConfig.description, mainClass = 'container' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 ---
 
@@ -26,6 +26,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
+    <slot name="head" />
   </head>
   <body>
     <div class="shell">
@@ -39,12 +40,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
           </nav>
           <div style="display:flex; gap:0.6rem; align-items:center">
             <SearchModal client:idle />
-            <ThemeToggle client:idle />
           </div>
         </div>
       </header>
 
-      <main class="container" style="padding-block:1.2rem 2rem">
+      <main class={mainClass} style="padding-block:1.2rem 2rem">
         <slot />
       </main>
 

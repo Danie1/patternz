@@ -25,6 +25,11 @@ concept_links:
   - concept_idempotency
   - concept_delivery_guarantees
   - concept_backpressure
+depends_on_concepts:
+  - concept_delivery_guarantees
+  - concept_idempotency
+related_to_concepts:
+  - concept_backpressure
 architecture_variants:
   - Simple queue + workers for startup velocity
   - Event-driven orchestration for high scale and observability
@@ -34,12 +39,16 @@ related_patterns:
   - pattern_rate_limiter
   - pattern_event_driven
   - pattern_api_gateway
+depends_on_patterns:
+  - pattern_queue
+  - pattern_circuit_breaker
+related_to_patterns:
+  - pattern_rate_limiter
+  - pattern_event_driven
 quiz_ids:
   - quiz_tradeoff_judgment
 estimated_time: 20
 difficulty: medium
-related_comparisons:
-  - comparison_queue_vs_sync
 ---
 This scenario emphasizes practical tradeoffs between reliability, cost, and complexity in asynchronous systems.
 

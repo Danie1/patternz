@@ -1,7 +1,8 @@
 export type ProgressState = {
-  recentlyViewed: Array<{ id: string; type: 'pattern' | 'scenario' | 'comparison'; title: string; slug: string; viewedAt: string }>;
+  recentlyViewed: Array<{ id: string; type: 'pattern' | 'scenario'; title: string; slug: string; viewedAt: string }>;
   completedQuizzes: Array<{ id: string; title: string; slug: string; completedAt: string; score: number }>;
   savedScenarios: Array<{ id: string; title: string; slug: string; savedAt: string }>;
+  reviewedNodeIds: string[];
   streakDays: number;
   lastActiveDate?: string;
 };
@@ -25,9 +26,10 @@ export function loadProgress(): ProgressState {
     return {
       ...emptyProgress(),
       ...parsed,
-      recentlyViewed: parsed.recentlyViewed ?? [],
+      recentlyViewed: (parsed.recentlyViewed ?? []).filter((item) => item.type === 'pattern' || item.type === 'scenario'),
       completedQuizzes: parsed.completedQuizzes ?? [],
-      savedScenarios: parsed.savedScenarios ?? []
+      savedScenarios: parsed.savedScenarios ?? [],
+      reviewedNodeIds: Array.from(new Set(parsed.reviewedNodeIds ?? [])).filter((id) => typeof id === 'string')
     };
   } catch {
     return emptyProgress();
@@ -41,7 +43,7 @@ export function saveProgress(state: ProgressState) {
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
-export function trackView(entry: { id: string; type: 'pattern' | 'scenario' | 'comparison'; title: string; slug: string }) {
+export function trackView(entry: { id: string; type: 'pattern' | 'scenario'; title: string; slug: string }) {
   const state = loadProgress();
   const next = [
     {
@@ -55,12 +57,15 @@ export function trackView(entry: { id: string; type: 'pattern' | 'scenario' | 'c
   const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
   const isConsecutive = state.lastActiveDate === yesterday;
 
-  saveProgress({
+  const nextState = {
     ...state,
     recentlyViewed: next,
     streakDays: state.lastActiveDate === today ? state.streakDays : isConsecutive ? state.streakDays + 1 : 1,
     lastActiveDate: today
-  });
+  };
+
+  saveProgress(nextState);
+  return nextState;
 }
 
 export function completeQuiz(quiz: { id: string; title: string; slug: string; score: number }) {
@@ -92,11 +97,31 @@ export function toggleSavedScenario(scenario: { id: string; title: string; slug:
   });
 }
 
+export function setNodeReviewed(nodeId: string, reviewed: boolean) {
+  const state = loadProgress();
+  const current = new Set(state.reviewedNodeIds);
+
+  if (reviewed) {
+    current.add(nodeId);
+  } else {
+    current.delete(nodeId);
+  }
+
+  const next = {
+    ...state,
+    reviewedNodeIds: Array.from(current)
+  };
+
+  saveProgress(next);
+  return next;
+}
+
 function emptyProgress(): ProgressState {
   return {
     recentlyViewed: [],
     completedQuizzes: [],
     savedScenarios: [],
+    reviewedNodeIds: [],
     streakDays: 0
   };
 }

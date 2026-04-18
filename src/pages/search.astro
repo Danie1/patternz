@@ -1,15 +1,29 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
+import { getRoadmapGraph, roadmapTopicHref } from '@/lib/content';
+
+const roadmap = await getRoadmapGraph();
+const topicLookup = Object.fromEntries(
+  roadmap.nodes
+    .filter((node) => node.role === 'item')
+    .map((node) => [
+      `/search-topics/${encodeURIComponent(node.id)}`,
+      {
+        type: `${node.type}s`,
+        href: roadmapTopicHref(node.id)
+      }
+    ])
+);
 ---
 
-<MainLayout title="Search | Pattern Atlas" description="Local static search across concepts, patterns, scenarios, comparisons, and quizzes.">
+<MainLayout title="Search | PatternZ" description="Local static search across concepts, patterns, scenarios, and quizzes.">
   <section class="card">
     <h1 style="margin-top:0">Search</h1>
     <input id="search-input" class="search-input" placeholder="Search architecture concepts" />
     <div id="results" style="margin-top:1rem; display:grid; gap:0.9rem;"></div>
   </section>
 
-  <script is:inline>
+  <script is:inline define:vars={{ topicLookup }}>
     const params = new URLSearchParams(window.location.search);
     const initial = params.get('q') ?? '';
     const input = document.getElementById('search-input');
@@ -24,17 +38,23 @@ import MainLayout from '@/layouts/MainLayout.astro';
       return pagefind;
     }
 
+    function normalizeUrl(url) {
+      return url.replace(/\/$/, '');
+    }
+
+    function resolveTopic(url) {
+      return topicLookup[normalizeUrl(url)] ?? null;
+    }
+
     function detectType(url) {
-      if (url.includes('/concepts/')) return 'concepts';
-      if (url.includes('/patterns/')) return 'patterns';
-      if (url.includes('/scenarios/')) return 'scenarios';
-      if (url.includes('/compare/')) return 'comparisons';
+      const topic = resolveTopic(url);
+      if (topic) return topic.type;
       if (url.includes('/quiz/')) return 'quizzes';
       return 'other';
     }
 
     function groupByType(results) {
-      const grouped = { concepts: [], patterns: [], scenarios: [], comparisons: [], quizzes: [] };
+      const grouped = { concepts: [], patterns: [], scenarios: [], quizzes: [] };
       for (const item of results) {
         const inferred = detectType(item.url);
         if (grouped[inferred]) grouped[inferred].push(item);
@@ -65,8 +85,10 @@ import MainLayout from '@/layouts/MainLayout.astro';
         list.style.margin = '0';
         list.style.paddingLeft = '1rem';
         items.forEach((item) => {
+          const topic = resolveTopic(item.url);
+          const href = topic?.href ?? item.url;
           const li = document.createElement('li');
-          li.innerHTML = `<a href="${item.url}">${item.meta.title}</a> <span class="muted">${item.excerpt ?? ''}</span>`;
+          li.innerHTML = `<a href="${href}">${item.meta.title}</a> <span class="muted">${item.excerpt ?? ''}</span>`;
           list.append(li);
         });
         section.append(list);

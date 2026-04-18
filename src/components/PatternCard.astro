@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { entrySlug } from '@/lib/content';
+import { entrySlug, roadmapTopicHref } from '@/lib/content';
 
 interface Props {
   pattern: CollectionEntry<'patterns'>;
@@ -12,7 +12,7 @@ const slug = entrySlug(pattern.id);
 
 <article class="card">
   <div style="display:flex; justify-content:space-between; gap:0.5rem; align-items:flex-start;">
-    <h3 style="margin:0"><a href={`/patterns/${slug}`}>{pattern.data.title}</a></h3>
+    <h3 style="margin:0"><a href={roadmapTopicHref(slug)}>{pattern.data.title}</a></h3>
     <span class="chip">{pattern.data.level}</span>
   </div>
   <p class="muted">{pattern.data.summary}</p>

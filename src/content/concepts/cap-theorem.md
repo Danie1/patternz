@@ -20,6 +20,12 @@ related_concepts:
   - concept_partition_tolerance
   - concept_eventual_consistency
   - concept_strong_consistency
+depends_on_concepts:
+  - concept_availability
+  - concept_partition_tolerance
+related_to_concepts:
+  - concept_eventual_consistency
+  - concept_strong_consistency
 related_patterns:
   - pattern_replication
   - pattern_sharding

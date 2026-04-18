@@ -5,7 +5,7 @@ type Props = {
   placeholder?: string;
 };
 
-export default function SearchModal({ placeholder = 'Search patterns, scenarios, comparisons...' }: Props) {
+export default function SearchModal({ placeholder = 'Search patterns, scenarios, concepts...' }: Props) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
 

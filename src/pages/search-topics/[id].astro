@@ -1,0 +1,39 @@
+---
+import MainLayout from '@/layouts/MainLayout.astro';
+import { getRoadmapGraph } from '@/lib/content';
+
+export async function getStaticPaths() {
+  const graph = await getRoadmapGraph();
+  return graph.nodes
+    .filter((node) => node.role === 'item')
+    .map((node) => ({
+      params: { id: node.id },
+      props: { node }
+    }));
+}
+
+const { node } = Astro.props;
+---
+
+<MainLayout title={`${node.title} | Search Topic`} description={node.summary}>
+  <article class="card section">
+    <p class="kicker">Search topic</p>
+    <h1 style="margin-top:0">{node.title}</h1>
+    <p>{node.summary}</p>
+
+    {node.sections.map((section) => (
+      <section class="section">
+        <h2>{section.title}</h2>
+        {section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+        {section.bullets?.length ? <ul>{section.bullets.map((item) => <li>{item}</li>)}</ul> : null}
+      </section>
+    ))}
+
+    {node.diagrams.length ? (
+      <section class="section">
+        <h2>Diagram notes</h2>
+        {node.diagrams.map((diagram) => <pre style="white-space:pre-wrap">{diagram}</pre>)}
+      </section>
+    ) : null}
+  </article>
+</MainLayout>

@@ -1,19 +1,9 @@
 ---
-import MainLayout from '@/layouts/MainLayout.astro';
-import LibraryLayout from '@/layouts/LibraryLayout.astro';
-import ScenarioCard from '@/components/ScenarioCard.astro';
-import { getScenarios } from '@/lib/content';
-
-const scenarios = await getScenarios();
+import RouteRedirect from '@/components/RouteRedirect.astro';
 ---
 
-<MainLayout title="Scenarios | Pattern Atlas" description="Guided architecture scenario explorations for practical system design intuition.">
-  <LibraryLayout
-    title="Scenario explorer"
-    description="Understand how multiple patterns combine under real constraints."
-  >
-    <div class="grid-cards">
-      {scenarios.map((scenario) => <ScenarioCard scenario={scenario} />)}
-    </div>
-  </LibraryLayout>
-</MainLayout>
+<RouteRedirect
+  title="Scenarios | PatternZ"
+  target="/"
+  message="Scenario browsing now happens inside the roadmap workspace."
+/>

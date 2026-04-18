@@ -34,8 +34,6 @@ quiz_ids:
   - quiz_pattern_fundamentals
 estimated_time: 18
 difficulty: easy
-related_comparisons:
-  - comparison_queue_vs_sync
 ---
 This scenario helps juniors reason about read-heavy systems where simple tradeoffs around caching and consistency matter.
 

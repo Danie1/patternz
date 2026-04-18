@@ -24,9 +24,19 @@ related_concepts:
   - concept_idempotency
   - concept_eventual_consistency
   - concept_fault_isolation
+depends_on_concepts:
+  - concept_delivery_guarantees
+  - concept_idempotency
+related_to_concepts:
+  - concept_backpressure
+  - concept_eventual_consistency
 related_patterns:
   - pattern_event_driven
   - pattern_circuit_breaker
+depends_on_patterns:
+  - pattern_rate_limiter
+related_to_patterns:
+  - pattern_event_driven
 related_scenarios:
   - scenario_notification_service
   - scenario_chat_app

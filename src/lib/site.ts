@@ -1,12 +1,9 @@
 export const siteConfig = {
-  name: 'Pattern Atlas',
+  name: 'PatternZ',
   description:
     'Learn software architecture through patterns, scenarios, and practical tradeoff exploration.',
   nav: [
-    { label: 'Concepts', href: '/concepts' },
-    { label: 'Patterns', href: '/patterns' },
-    { label: 'Scenarios', href: '/scenarios' },
-    { label: 'Compare', href: '/compare' },
+    { label: 'Roadmap', href: '/' },
     { label: 'Progress', href: '/progress' },
     { label: 'About', href: '/about' }
   ]

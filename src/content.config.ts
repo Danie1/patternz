@@ -22,6 +22,11 @@ const patterns = defineCollection({
     related_concepts: z.array(z.string().regex(/^concept_/)),
     related_patterns: z.array(z.string()),
     related_scenarios: z.array(z.string()),
+    depends_on_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    depends_on_patterns: z.array(z.string().regex(/^pattern_/)).optional(),
+    related_to_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    related_to_patterns: z.array(z.string().regex(/^pattern_/)).optional(),
+    related_to_scenarios: z.array(z.string().regex(/^scenario_/)).optional(),
     tags: z.array(z.string()),
     diagram_reference: z.string(),
     quiz_ids: z.array(z.string()),
@@ -52,10 +57,14 @@ const scenarios = defineCollection({
     concept_links: z.array(z.string().regex(/^concept_/)),
     architecture_variants: z.array(z.string()),
     related_patterns: z.array(z.string()),
+    depends_on_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    depends_on_patterns: z.array(z.string().regex(/^pattern_/)).optional(),
+    related_to_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    related_to_patterns: z.array(z.string().regex(/^pattern_/)).optional(),
+    related_to_scenarios: z.array(z.string().regex(/^scenario_/)).optional(),
     quiz_ids: z.array(z.string()),
     estimated_time: z.number(),
-    difficulty: difficultySchema,
-    related_comparisons: z.array(z.string())
+    difficulty: difficultySchema
   })
 });
 
@@ -83,27 +92,6 @@ const quizzes = defineCollection({
   })
 });
 
-const comparisons = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/comparisons' }),
-  schema: z.object({
-    id: z.string(),
-    title: z.string(),
-    summary: z.string(),
-    compared_options: z.array(z.string()),
-    dimensions: z.array(
-      z.object({
-        name: z.string(),
-        option_scores: z.record(z.string(), z.string())
-      })
-    ),
-    recommended_when: z.array(z.string()),
-    anti_patterns: z.array(z.string()),
-    related_patterns: z.array(z.string()),
-    related_scenarios: z.array(z.string()),
-    examples: z.array(z.string())
-  })
-});
-
 const concepts = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/concepts' }),
   schema: z.object({
@@ -116,6 +104,10 @@ const concepts = defineCollection({
     examples: z.array(z.string()),
     related_concepts: z.array(z.string()),
     related_patterns: z.array(z.string()),
+    depends_on_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    related_to_concepts: z.array(z.string().regex(/^concept_/)).optional(),
+    related_to_patterns: z.array(z.string().regex(/^pattern_/)).optional(),
+    related_to_scenarios: z.array(z.string().regex(/^scenario_/)).optional(),
     tags: z.array(z.string()),
     estimated_read_time: z.number(),
     order: z.number()
@@ -126,6 +118,5 @@ export const collections = {
   patterns,
   scenarios,
   quizzes,
-  comparisons,
   concepts
 };

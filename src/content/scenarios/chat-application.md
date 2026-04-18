@@ -37,8 +37,6 @@ quiz_ids:
   - quiz_scenario_steps
 estimated_time: 24
 difficulty: medium
-related_comparisons:
-  - comparison_monolith_vs_microservices
 ---
 The chat scenario shows how patterns combine, and where complexity starts to appear as requirements increase.
 

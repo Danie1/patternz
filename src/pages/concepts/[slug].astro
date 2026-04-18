@@ -1,75 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
-import MainLayout from '@/layouts/MainLayout.astro';
-import ContentPageLayout from '@/layouts/ContentPageLayout.astro';
-import SectionNav from '@/components/SectionNav.astro';
-import RelatedLinks from '@/components/RelatedLinks.astro';
-import { entrySlug } from '@/lib/content';
+import { getConcepts, entrySlug, roadmapTopicHref } from '@/lib/content';
+import RouteRedirect from '@/components/RouteRedirect.astro';
 
 export async function getStaticPaths() {
-  const concepts = await getCollection('concepts');
+  const concepts = await getConcepts();
   return concepts.map((entry) => ({
     params: { slug: entrySlug(entry.id) },
-    props: { entry }
+    props: {
+      title: entry.data.title,
+      target: roadmapTopicHref(entrySlug(entry.id))
+    }
   }));
 }
 
-const { entry } = Astro.props;
-const allConcepts = await getCollection('concepts');
-const allPatterns = await getCollection('patterns');
-
-const relatedConceptLinks = allConcepts
-  .filter((item) => entry.data.related_concepts.includes(item.data.id))
-  .map((item) => ({ label: item.data.title, href: `/concepts/${entrySlug(item.id)}` }));
-
-const relatedPatternLinks = allPatterns
-  .filter((item) => entry.data.related_patterns.includes(item.data.id))
-  .map((item) => ({ label: item.data.title, href: `/patterns/${entrySlug(item.id)}` }));
-
-const sections = [
-  { id: 'definition', label: 'Definition' },
-  { id: 'why', label: 'Why it matters' },
-  { id: 'tradeoffs', label: 'Tradeoffs' },
-  { id: 'examples', label: 'Examples' }
-];
+const { title, target } = Astro.props;
 ---
 
-<MainLayout title={`${entry.data.title} | Concepts`} description={entry.data.summary}>
-  <ContentPageLayout sectionTitle="Concept detail">
-    <SectionNav slot="left" items={sections} />
-
-    <header>
-      <h1 style="margin:0">{entry.data.title}</h1>
-      <p class="muted">{entry.data.summary}</p>
-      <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-        <span class="badge">{entry.data.estimated_read_time} min read</span>
-        {entry.data.tags.map((tag) => <span class="badge">{tag}</span>)}
-      </div>
-    </header>
-
-    <section id="definition" class="section">
-      <h2>Definition</h2>
-      <p>{entry.data.definition}</p>
-    </section>
-
-    <section id="why" class="section">
-      <h2>Why it matters</h2>
-      <ul>{entry.data.why_it_matters.map((item) => <li>{item}</li>)}</ul>
-    </section>
-
-    <section id="tradeoffs" class="section">
-      <h2>Tradeoffs</h2>
-      <ul>{entry.data.tradeoffs.map((item) => <li>{item}</li>)}</ul>
-    </section>
-
-    <section id="examples" class="section">
-      <h2>Examples</h2>
-      <ul>{entry.data.examples.map((item) => <li>{item}</li>)}</ul>
-    </section>
-
-    <div slot="right" style="display:grid; gap:1rem;">
-      <RelatedLinks title="Related concepts" links={relatedConceptLinks} />
-      <RelatedLinks title="Related patterns" links={relatedPatternLinks} />
-    </div>
-  </ContentPageLayout>
-</MainLayout>
+<RouteRedirect
+  title={`${title} | PatternZ`}
+  target={target}
+  message="Concept details now open in the roadmap workspace side panel."
+/>

@@ -1,19 +1,9 @@
 ---
-import MainLayout from '@/layouts/MainLayout.astro';
-import LibraryLayout from '@/layouts/LibraryLayout.astro';
-import ConceptCard from '@/components/ConceptCard.astro';
-import { getConcepts } from '@/lib/content';
-
-const concepts = await getConcepts();
+import RouteRedirect from '@/components/RouteRedirect.astro';
 ---
 
-<MainLayout title="Concepts | Pattern Atlas" description="Foundational architecture concepts that explain system guarantees and tradeoffs.">
-  <LibraryLayout
-    title="Concept library"
-    description="Learn core architecture properties first, then apply them through concrete patterns."
-  >
-    <div class="grid-cards">
-      {concepts.map((concept) => <ConceptCard concept={concept} />)}
-    </div>
-  </LibraryLayout>
-</MainLayout>
+<RouteRedirect
+  title="Concepts | PatternZ"
+  target="/"
+  message="Concept browsing now happens inside the roadmap workspace."
+/>

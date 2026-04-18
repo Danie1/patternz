@@ -21,13 +21,13 @@ const isSvg = type === 'svg';
 <script>
   import mermaid from 'mermaid';
 
-  const nodes = document.querySelectorAll('pre.mermaid:not([data-mermaid-rendered="true"])');
+  const nodes = document.querySelectorAll<HTMLElement>('pre.mermaid:not([data-mermaid-rendered="true"])');
   if (nodes.length > 0) {
-    const w = window;
+    const w = window as Window & { __patternzMermaidInitialized?: boolean };
     if (!w.__patternzMermaidInitialized) {
       mermaid.initialize({
         startOnLoad: false,
-        theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'default'
+        theme: 'default'
       });
       w.__patternzMermaidInitialized = true;
     }

@@ -47,8 +47,6 @@ quiz_ids:
   - quiz_tradeoff_judgment
 estimated_time: 45
 difficulty: hard
-related_comparisons:
-  - comparison_queue_vs_direct_sync
 ---
 Designing a social feed surfaces one of the most instructive tradeoffs in distributed systems—fan-out on read versus fan-out on write. Neither extreme works universally; the production answer is nearly always a hybrid that handles the celebrity problem differently from regular accounts.
 

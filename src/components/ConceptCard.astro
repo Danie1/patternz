@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { entrySlug } from '@/lib/content';
+import { entrySlug, roadmapTopicHref } from '@/lib/content';
 
 interface Props {
   concept: CollectionEntry<'concepts'>;
@@ -11,7 +11,7 @@ const slug = entrySlug(concept.id);
 ---
 
 <article class="card">
-  <h3 style="margin:0"><a href={`/concepts/${slug}`}>{concept.data.title}</a></h3>
+  <h3 style="margin:0"><a href={roadmapTopicHref(slug)}>{concept.data.title}</a></h3>
   <p class="muted">{concept.data.summary}</p>
   <div style="display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem;">
     <span class="badge">{concept.data.estimated_read_time} min</span>

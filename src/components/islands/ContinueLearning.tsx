@@ -17,7 +17,7 @@ export default function ContinueLearning() {
         <ul style={{ margin: 0, paddingLeft: '1rem', display: 'grid', gap: '0.45rem' }}>
           {items.map((entry) => (
             <li>
-              <a href={`/${entry.type === 'comparison' ? 'compare' : `${entry.type}s`}/${entry.slug}`}>{entry.title}</a>
+              <a href={`/?topic=${encodeURIComponent(entry.slug)}`}>{entry.title}</a>
             </li>
           ))}
         </ul>

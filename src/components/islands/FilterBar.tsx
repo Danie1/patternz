@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'preact/hooks';
 
+function roadmapHref(slug: string) {
+  return `/?topic=${encodeURIComponent(slug)}`;
+}
+
 type Item = {
   slug: string;
   title: string;
@@ -86,7 +90,7 @@ export default function FilterBar({ items }: Props) {
         {results.map((item) => (
           <article class="card" style={{ boxShadow: 'none' }}>
             <h3 style={{ margin: 0 }}>
-              <a href={`/patterns/${item.slug}`}>{item.title}</a>
+              <a href={roadmapHref(item.slug)}>{item.title}</a>
             </h3>
             <p class="muted">{item.summary}</p>
             <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>

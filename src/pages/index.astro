@@ -1,79 +1,12 @@
 ---
 import MainLayout from '@/layouts/MainLayout.astro';
-import PatternCard from '@/components/PatternCard.astro';
-import ScenarioCard from '@/components/ScenarioCard.astro';
-import ComparisonCard from '@/components/ComparisonCard.astro';
-import ContinueLearning from '@/components/islands/ContinueLearning';
-import { getComparisons, getPatterns, getScenarios } from '@/lib/content';
+import RoadmapWorkspace from '@/components/islands/RoadmapWorkspace';
+import { getRoadmapGraph } from '@/lib/content';
 
-const patterns = await getPatterns();
-const scenarios = await getScenarios();
-const comparisons = await getComparisons();
-
-const featuredPatterns = patterns.slice(0, 4);
-const popularScenarios = scenarios.slice(0, 2);
+const graph = await getRoadmapGraph();
 ---
 
-<MainLayout title="Pattern Atlas | Architecture Handbook" description="Interactive engineering handbook for architecture patterns, scenarios, and tradeoffs.">
-	<section class="card" style="padding:1.4rem; display:grid; gap:1rem;">
-		<p class="kicker">Architecture handbook</p>
-		<h1 style="margin:0">Learn architecture through patterns, scenarios, and tradeoffs.</h1>
-		<p class="muted" style="margin:0; max-width:70ch;">
-			Browse bite-sized architecture patterns, walk through guided scenarios, and train design judgment with comparison and quiz modules.
-		</p>
-		<form action="/search">
-			<input class="hero-search" name="q" placeholder="Search patterns, scenarios, comparisons, quizzes" />
-		</form>
-	</section>
 
-	<section class="section">
-		<p class="kicker">Start here</p>
-		<div class="grid-cards">
-			<article class="card"><h2 style="margin-top:0">New to architecture</h2><p class="muted">Start with beginner-friendly core patterns.</p><a href="/patterns">Browse fundamentals</a></article>
-			<article class="card"><h2 style="margin-top:0">Learn by systems</h2><p class="muted">Explore full-system scenarios and decisions.</p><a href="/scenarios">Open scenarios</a></article>
-			<article class="card"><h2 style="margin-top:0">Train tradeoff intuition</h2><p class="muted">Compare architectural options side by side.</p><a href="/compare">View comparisons</a></article>
-		</div>
-	</section>
-
-	<section class="section">
-		<div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
-			<h2 style="margin:0">Featured patterns</h2>
-			<a href="/patterns">See all</a>
-		</div>
-		<div class="grid-cards" style="margin-top:0.8rem;">
-			{featuredPatterns.map((pattern) => <PatternCard pattern={pattern} />)}
-		</div>
-	</section>
-
-	<section class="section">
-		<div style="display:flex; justify-content:space-between; align-items:center; gap:1rem;">
-			<h2 style="margin:0">Popular scenarios</h2>
-			<a href="/scenarios">See all</a>
-		</div>
-		<div class="grid-cards" style="margin-top:0.8rem;">
-			{popularScenarios.map((scenario) => <ScenarioCard scenario={scenario} />)}
-		</div>
-	</section>
-
-	<section class="section grid-cards">
-		<article class="card">
-			<p class="kicker">Learn by tradeoff</p>
-			<h2 style="margin-top:0">Architecture choices are constraints in disguise.</h2>
-			<p class="muted">Use structured comparisons to decide under latency, cost, consistency, and maintainability pressure.</p>
-			<ComparisonCard comparison={comparisons[0]} />
-		</article>
-		<ContinueLearning client:visible />
-	</section>
-
-	<section class="section card">
-		<p class="kicker">Concept map preview</p>
-		<p style="margin-top:0">Traffic management links to reliability patterns, which link to async processing and data platform choices.</p>
-		<div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
-			<a class="badge" href="/patterns/load-balancer">Load balancer</a>
-			<a class="badge" href="/patterns/rate-limiter">Rate limiter</a>
-			<a class="badge" href="/patterns/circuit-breaker">Circuit breaker</a>
-			<a class="badge" href="/patterns/queue">Queue</a>
-			<a class="badge" href="/patterns/database-replication">Replication</a>
-		</div>
-	</section>
+<MainLayout title="PatternZ | Interactive Knowledge Map" description="Explore software architecture concepts, patterns, and scenarios through an interactive roadmap workspace." mainClass="container container-left roadmap-home-main">
+	<RoadmapWorkspace graph={graph} client:load />
 </MainLayout>
